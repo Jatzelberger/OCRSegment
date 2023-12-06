@@ -67,6 +67,7 @@ def pdf_to_png(pdf: Path, out_dir: Path, dpi: int = 300, height: int | None = No
     """
     if not (pdf.exists() or pdf.is_file()):
         raise FileNotFoundError
+
     mkdir_if_not_exists(out_dir)
 
     if not is_empty(out_dir):
