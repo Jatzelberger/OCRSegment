@@ -11,9 +11,9 @@ def ocropy_handler(
         processed_dir: str,
 ) -> None:
     """
-    Handles orcopy nlbin input
+    Handles orcopy-nlbin API
 
-    :param books_path: path to image file
+    :param books_path: path to books root
     :param orig_dir: directory name containing original image files
     :param processed_dir: output directory, will be generated if it does not exist
     :return: None
@@ -23,7 +23,6 @@ def ocropy_handler(
         return None
 
     cfg = read_config(CONFIG_FILE, CONFIG.OCROPY)
-    print(cfg)
 
     books = sorted(books_path.glob('*/'))
     for book in books:
@@ -33,7 +32,7 @@ def ocropy_handler(
         if not files:
             print("! Book is empty")
             continue
-        call = f'{cfg.get("python")} "{cfg.get("ocropy_path")}ocropus-nlbin" -n "{book.joinpath("*")}" -o "{processed_path}" --maxskew 0 {cfg.get("additional_args")}'
+        call = f'{cfg.get("python")} python "{cfg.get("ocropy_path")}ocropus-nlbin" -n "{book.joinpath("*")}" --o "{processed_path}" --maxskew 0 {cfg.get("additional_args")}'
         print(call)
         try:
             os.system(call)

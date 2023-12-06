@@ -2,7 +2,7 @@ from pathlib import Path
 
 from docopt import docopt
 
-from ocr_services import parse_handler, ocropy_handler
+from ocr_services import parse_handler, ocropy_handler, kraken_handler
 
 _version = "OCRSegment v1.0"
 
@@ -84,7 +84,14 @@ def parse(argv: list) -> None:
         )
 
     if args.get('segment'):
-        raise NotImplementedError
+        kraken_handler(
+            books_path=Path(args.get('BOOKS_PATH')),
+            processed_dir=args.get('PROCESSED_DIR'),
+            kraken_model=Path(args.get('KRAKEN_MODEL')),
+            use_bin=args.get('--bin'),
+            baseline=args.get('--bl'),
+            suffix=args.get('--suffix'),
+        )
 
     if args.get('fix'):
         raise NotImplementedError
