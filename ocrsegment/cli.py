@@ -25,7 +25,7 @@ Arguments:
     segment                 Segment processed images with kraken and pagexml output.
     fix                     Fix kraken output (see flags).
     INPUT_PATH              Absolute path to input files: input_folder/<book_name>/(file.pdf/.<image_suffix>).
-    BOOKS_PATH              Absolute output path containing parsed and processed books
+    BOOKS_PATH              Absolute output path containing parsed and processed books.
     ORIG_DIR                Name of folder in BOOKS_PATH/<book_name>/ORIG_DIR/ containing parsed original files.
     PROCESSED_DIR           Name of folder in BOOKS_PATH/<book_name>/PROCESSED_DIR/ containing processed original files.
     KRAKEN_MODEL            Absolute path to Kraken segmentation model.
@@ -61,7 +61,7 @@ def parse(argv: list) -> None:
     :return: None
     """
     args = docopt(docstring=_docstring, version=_version, argv=argv[1:])
-    print(args)
+    # print(args)
 
     if args.get('parse'):
         parse_handler(

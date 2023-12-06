@@ -32,7 +32,7 @@ def ocropy_handler(
         if not files:
             print("! Book is empty")
             continue
-        call = f'{cfg.get("python")} python "{cfg.get("ocropy_path")}ocropus-nlbin" -n "{book.joinpath("*")}" --o "{processed_path}" --maxskew 0 {cfg.get("additional_args")}'
+        call = f'{cfg.get("python")} "{cfg.get("ocropy_path")}ocropus-nlbin" -n "{book.joinpath("*")}" --o "{processed_path}" --maxskew 0 {cfg.get("additional_args")}'
         print(call)
         try:
             os.system(call)
