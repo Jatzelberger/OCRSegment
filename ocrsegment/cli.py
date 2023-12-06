@@ -2,7 +2,7 @@ from pathlib import Path
 
 from docopt import docopt
 
-from ocr_services import parse_handler, ocropy_handler, kraken_handler
+from ocr_services import parse_handler, ocropy_handler, kraken_handler, fix_handler
 
 _version = "OCRSegment v1.0"
 
@@ -17,7 +17,7 @@ Usage:
     ocrsegment parse INPUT_PATH BOOKS_PATH ORIG_DIR [-p] [-i] [--dpi=<dpi>] [--size=<size>] [--orig=<orig>]
     ocrsegment nlbin BOOKS_PATH ORIG_DIR PROCESSED_DIR
     ocrsegment segment BOOKS_PATH PROCESSED_DIR KRAKEN_MODEL (--bin | --nrm) [--bl] [--suffix=<suffix>]
-    ocrsegment fix BOOKS_PATH PROCESSED_DIR [-s] [-f] [-n] [--suffix=<suffix>]
+    ocrsegment fix BOOKS_PATH PROCESSED_DIR [-s] [-n] [--suffix=<suffix>] [--orig=<orig>]
 
 Arguments:
     parse                   Parse PDF or image files to usable .png files.
@@ -36,8 +36,7 @@ Options:
     -p                      Parse PDF files to usable .png file.
     -i                      Parse image files to usable .png file.
     -s                      Fix: make PageXML file valid for official scheme.
-    -f                      Fix: change filename of PageXML files from e.g. <name><suffix> to <name>.xml.
-    -n                      Fix: change @imageFilename tag in PageXML file from absolute path to <filename>.png.
+    -n                      Fix: change @imageFilename tag in PageXML file from absolute path to <filename><orig>.png.
     --bin                   Use binarized .bin.png files for segmentation.
     --nrm                   Use normalized .nrm.png files for segmentation.
     --bl                    Use baseline module for segmentation.
@@ -73,7 +72,7 @@ def parse(argv: list) -> None:
             image_mode=args.get('-i'),
             dpi=int(args.get('--dpi')),
             size=None if args.get('--size') is None else int(args.get('--size')),
-            orig_suffix=args.get('--orig')
+            orig_suffix=args.get('--orig'),
         )
 
     if args.get('nlbin'):
@@ -94,4 +93,11 @@ def parse(argv: list) -> None:
         )
 
     if args.get('fix'):
-        raise NotImplementedError
+        fix_handler(
+            books_path=Path(args.get('BOOKS_PATH')),
+            processed_dir=args.get('PROCESSED_DIR'),
+            scheme_mode=args.get('-s'),
+            filename_mode=args.get('-n'),
+            xml_suffix=args.get('--suffix'),
+            orig_suffix=args.get('--orig'),
+        )
