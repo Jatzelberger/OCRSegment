@@ -2,7 +2,7 @@ from pathlib import Path
 
 from docopt import docopt
 
-from ocr_services import parse_handler, or_else
+from ocr_services import parse_handler, ocropy_handler
 
 _version = "OCRSegment v1.0"
 
@@ -15,7 +15,7 @@ Usage:
     ocrsegment (-h | --help)
     ocrsegment (-v | --version)
     ocrsegment parse INPUT_PATH BOOKS_PATH ORIG_DIR [-p] [-i] [--dpi=<dpi>] [--size=<size>] [--orig=<orig>]
-    ocrsegment nlbin BOOKS_PATH ORIG_DIR PROCESSED_DIR [OCROPY_ARGS...]
+    ocrsegment nlbin BOOKS_PATH ORIG_DIR PROCESSED_DIR
     ocrsegment segment BOOKS_PATH PROCESSED_DIR KRAKEN_MODEL (--bin | --nrm) [--bl] [--suffix=<suffix>]
     ocrsegment fix BOOKS_PATH PROCESSED_DIR [-s] [-f] [-n] [--suffix=<suffix>]
 
@@ -29,7 +29,6 @@ Arguments:
     ORIG_DIR                Name of folder in BOOKS_PATH/<book_name>/ORIG_DIR/ containing parsed original files.
     PROCESSED_DIR           Name of folder in BOOKS_PATH/<book_name>/PROCESSED_DIR/ containing processed original files.
     KRAKEN_MODEL            Absolute path to Kraken segmentation model.
-    OCROPY_ARGS             Additional arguments for Ocropys ocropus-nlbin.
     
 Options:
     -h --help               Show this screen.
@@ -78,7 +77,11 @@ def parse(argv: list) -> None:
         )
 
     if args.get('nlbin'):
-        raise NotImplementedError
+        ocropy_handler(
+            books_path=Path(args.get('BOOKS_PATH')),
+            orig_dir=args.get('ORIG_DIR'),
+            processed_dir=args.get('PROCESSED_DIR'),
+        )
 
     if args.get('segment'):
         raise NotImplementedError

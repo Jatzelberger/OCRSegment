@@ -16,7 +16,7 @@ def read_config(fp: Path, tag: CONFIG) -> dict:
     """
     cfg = configparser.ConfigParser()
     cfg.read(fp.as_posix())
-    return dict(cfg[tag.value])
+    return dict(cfg[tag.name])
 
 
 def mkdir_if_not_exists(dp: Path) -> bool:
@@ -54,7 +54,3 @@ def or_else(value: Any | None, default: Any) -> Any:
     :return: value or default
     """
     return default if value is None else value
-
-
-if __name__ == '__main__':
-    print(int(None))
