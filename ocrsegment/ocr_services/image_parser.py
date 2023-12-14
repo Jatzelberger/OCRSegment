@@ -24,7 +24,7 @@ def resize_image(image: Path, height: int) -> None:
     resized.save(image)
 
 
-def image_to_png(image: Path, out_dir: Path, height: int | None = None, suffix: str | None = None) -> Path:
+def image_to_png(image: Path, target_name: str, out_dir: Path, height: int | None = None, suffix: str | None = None) -> Path:
     """
     Copies an image of .png, .jpg, .jpeg or .tif to output dir, changes its type to .png. Resize image if specified
 
@@ -36,18 +36,20 @@ def image_to_png(image: Path, out_dir: Path, height: int | None = None, suffix: 
     """
     mkdir_if_not_exists(out_dir)
 
-    if not is_empty(out_dir):
-        print('! Image overridden: Output directory is not empty')
+    # if not is_empty(out_dir):
+    #    print('! Image overridden: Output directory is not empty')
 
-    file_name = image.name
+    # file_name = image.name
+    out_name = f'{target_name}{or_else(suffix, "")}.png'
+    out_path = out_dir.joinpath(out_name)
     if not image.as_posix().endswith('.png'):  # image type has to be changed
         img = Image.open(image)
-        for sfix in [x.value for x in IMAGE_SUFFIX]:
-            file_name = file_name.replace(sfix, '.png')
-        out_path = out_dir.joinpath(file_name.replace('.png', f'{or_else(suffix, "")}.png'))
+        # for sfix in [x.value for x in IMAGE_SUFFIX]:
+        #    file_name = file_name.replace(sfix, '.png')
+        # out_path = out_dir.joinpath(file_name.replace('.png', f'{or_else(suffix, "")}.png'))
         img.save(Path(out_path))
     else:  # file's suffix is already .png
-        out_path = out_dir.joinpath(file_name.replace('.png', f'{or_else(suffix, "")}.png'))
+        # out_path = out_dir.joinpath(file_name.replace('.png', f'{or_else(suffix, "")}.png'))
         shutil.copy(image, out_path)
     if height is not None:
         resize_image(out_path, height)
@@ -88,8 +90,8 @@ def parse_handler(
         in_path: Path,
         books_path: Path,
         orig_dir: str,
-        pdf_mode: bool,
-        image_mode: bool,
+        pdf_mode: bool = False,
+        image_mode: bool = False,
         dpi: int = 300,
         size: int | None = None,
         orig_suffix: str | None = None
@@ -125,11 +127,22 @@ def parse_handler(
         images = []
         for sfix in [x.value for x in IMAGE_SUFFIX]:
             images.extend(in_path.glob(f'**/*{sfix}'))
+        images.sort()
+        directory = None
+        counter = 1
         for image in images:
             print(f'...Parsing Image file: {image.as_posix()}')
             book_name = image.parent.name
+
+            if directory != image.parent:
+                directory = image.parent
+                counter = 1
+            else:
+                counter += 1
+
             image_to_png(
                 image=image,
+                target_name=f'{counter:04d}',
                 out_dir=books_path.joinpath(book_name, orig_dir),
                 height=size,
                 suffix=orig_suffix,

@@ -4,7 +4,7 @@ from docopt import docopt
 
 from ocr_services import parse_handler, ocropy_handler, kraken_handler, fix_handler
 
-_version = "OCRSegment v1.0"
+_version = "OCRSegment v1.1"
 
 _docstring = """
 OCRSegment Command Line Tool:
@@ -29,7 +29,7 @@ Arguments:
     ORIG_DIR                Name of folder in BOOKS_PATH/<book_name>/ORIG_DIR/ containing parsed original files.
     PROCESSED_DIR           Name of folder in BOOKS_PATH/<book_name>/PROCESSED_DIR/ containing processed original files.
     KRAKEN_MODEL            Absolute path to Kraken segmentation model.
-    
+
 Options:
     -h --help               Show this screen.
     -v --version            Show version.
@@ -44,10 +44,10 @@ Options:
     --dpi=<dpi>             DPI for PDF scanning. [default: 300]
     --size=<size>           Height for output .png files, to keep original size, do not specify.
     --suffix=<suffix>       PageXML suffix including leading dot. [default: .xml]
-    
+
 GitHub:
     https://github.com/Jatzelberger/OCRSegment
-    
+
 ZPD:
     Developed at \"Zentrum für Philologie und Digitalität\" at the \"Julius-Maximilians-Universität of Würzburg\".
 """
