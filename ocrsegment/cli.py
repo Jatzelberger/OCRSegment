@@ -101,12 +101,3 @@ def parse(argv: list) -> None:
             xml_suffix=args.get('--suffix'),
             orig_suffix=args.get('--orig'),
         )
-
-
-if __name__ == '__main__':
-    parse_handler(
-        in_path=Path('/home/janik/Desktop/tests/'),
-        books_path=Path('/home/janik/Desktop/testout/'),
-        orig_dir='input',
-        image_mode=True,
-    )
