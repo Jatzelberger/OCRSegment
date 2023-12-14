@@ -2,6 +2,8 @@ from pathlib import Path
 
 from lxml import etree
 
+from .helper import or_else
+
 
 def pagexml_fix(
         books_path: Path,
@@ -78,7 +80,7 @@ def filename_fix(
     """
     files = sorted(books_path.glob(f'**/{processed_dir}/*{xml_suffix}'))
     for file in files:
-        img_name = file.name.replace(xml_suffix, f'{orig_suffix}.png')
+        img_name = file.name.replace(xml_suffix, f'{or_else(orig_suffix, "")}.png')
         root = etree.parse(file.as_posix()).getroot()
         if root is None:
             print('Error parsing file' + file.as_posix())

@@ -34,7 +34,7 @@ def kraken_handler(
 
     cfg = read_config(CONFIG_FILE, CONFIG.KRAKEN)
     path = books_path.joinpath('**', processed_dir, f'*{".bin" if use_bin else ".nrm"}.png')
-    call = f'{cfg["environment"]} kraken -x -I "{path}" -o {suffix} segment {"-bl " if baseline else ""}--model "{kraken_model} {cfg.get("additional_args")}"'
+    call = f'{cfg["environment"]} kraken -x -I "{path}" -o {suffix} segment {"-bl " if baseline else ""}--model "{kraken_model}" {cfg.get("additional_args")}'
     print(call)
     try:
         os.system(call)
